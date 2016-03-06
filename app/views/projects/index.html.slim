@@ -1,1 +1,20 @@
-h1 Hello
+h1 Listing Projects
+- @projects.each do |project|
+  = link_to project.name, project
+  br
+.row
+  .col-md-3
+    h4 New Project
+    = form_for @project do |f|
+      - if @project.errors.any?
+        .alert.alert-danger
+          ul
+          - @project.errors.full_messages.each do |message|
+            li = message
+      .form-group
+        = f.label :name
+        = f.text_field :name, class: 'form-control'
+      .form-group
+        = f.label :description
+        = f.text_field :description, class: 'form-control'
+      = f.submit class: 'btn btn-primary'
