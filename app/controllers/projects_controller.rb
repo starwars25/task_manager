@@ -1,7 +1,5 @@
 class ProjectsController < ApplicationController
 
-  http_basic_authenticate_with name: ENV["TASK_MANAGER_LOGIN"], password: ENV["TASK_MANAGER_PASSWORD"]
-
   def index
     @projects = Project.all
     @project = Project.new
