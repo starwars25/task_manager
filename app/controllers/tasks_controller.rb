@@ -1,9 +1,7 @@
 class TasksController < ApplicationController
 
   def create
-    @project = Project.find(params[:project_id])
-    @active_tasks = @project.tasks.where(['status = ?', 0])
-    @completed_tasks = @project.tasks.where(['status = ?', 1])
+    @project = Project.includes(:tasks).find(params[:project_id])
     @task = Task.new(status: :active, project_id: params[:project_id])
     @task.attributes = task_params
     if @task.save
@@ -15,7 +13,17 @@ class TasksController < ApplicationController
   end
 
   def complete
-    byebug
+    @task = Task.find(params[:task_id])
+    @task.update_attribute(:status, params[:status])
+    respond_to do |format|
+      format.html do
+        flash[:success] = 'Task completed.'
+        redirect_to @task.project
+      end
+      format.js do
+        params[:status] == 'completed' ? render(:task_completed) : render(:task_active)
+      end
+    end
   end
 
   private

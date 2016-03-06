@@ -3,16 +3,20 @@
     h3 Project: #{@project.name}
     - if @project.description
       p = @project.description
-    h4 Active Tasks: #{@active_tasks.size}
-    - @active_tasks.each do |task|
-      = form_tag(project_task_complete_path(project_id: @project.id, task_id: task.id), {id: "task-form-#{task.id}"}) do
-        = check_box_tag :status, 1, false, id: "task-checkbox-#{task.id}", onclick: 'checkBoxClicked(this)'
-        span.task-text = task.content
-      br
-    h4 Completed Tasks: #{@completed_tasks.size}
-    - @completed_tasks.each do |task|
-      = task.content
-      br
+    h4 Active Tasks: #{@project.tasks.active.size}
+    - @project.tasks.active.each do |task|
+      .task id="task-#{task.id}"
+        = form_tag(project_task_complete_path(project_id: @project.id, task_id: task.id), {id: "task-form-#{task.id}", remote: true}) do
+          = hidden_field_tag :status, :completed
+          = check_box_tag :completed, 1, false, id: "task-checkbox-#{task.id}", onclick: 'checkBoxClicked(this)'
+          span.task-text = task.content
+    h4 Completed Tasks: #{@project.tasks.completed.size}
+    - @project.tasks.completed.each do |task|
+      .task id="task-#{task.id}"
+        = form_tag(project_task_complete_path(project_id: @project.id, task_id: task.id), {id: "task-form-#{task.id}", remote: true}) do
+          = hidden_field_tag :status, :active
+          = check_box_tag :completed, 1, true, id: "task-checkbox-#{task.id}", onclick: 'checkBoxClicked(this)'
+          span.task-text = task.content
   .col-md-3.col-md-offset-3
     h3 New Task
     = form_for @task, url: project_tasks_path(@project.id) do |f|
