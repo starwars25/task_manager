@@ -8,7 +8,9 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    @project = Project.includes(:tasks).find(params[:id])
+    @project = Project.find(params[:id])
+    @active_tasks = @project.tasks.where(['status = ?', 0])
+    @completed_tasks = @project.tasks.where(['status = ?', 1])
     @task = Task.new(project_id: @project.id)
   end
 

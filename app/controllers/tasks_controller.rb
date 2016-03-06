@@ -1,7 +1,9 @@
 class TasksController < ApplicationController
 
   def create
-    @project = Project.includes(:tasks).find(params[:project_id])
+    @project = Project.find(params[:project_id])
+    @active_tasks = @project.tasks.where(['status = ?', 0])
+    @completed_tasks = @project.tasks.where(['status = ?', 1])
     @task = Task.new(status: :active, project_id: params[:project_id])
     @task.attributes = task_params
     if @task.save
@@ -10,6 +12,10 @@ class TasksController < ApplicationController
     else
       render 'projects/show'
     end
+  end
+
+  def complete
+    byebug
   end
 
   private
