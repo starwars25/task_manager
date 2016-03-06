@@ -14,6 +14,18 @@ class TasksController < ApplicationController
     end
   end
 
+  def destroy
+    @task = Task.find(params[:id])
+    @task.destroy
+    respond_to do |format|
+      format.html do
+        flash[:success] = 'Task successfully deleted.'
+        redirect_to project_path(params[:project_id])
+      end
+      format.js
+    end
+  end
+
   def complete
     @task = Task.find(params[:task_id])
     @task.update_attribute(:status, params[:status])

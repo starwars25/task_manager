@@ -1,0 +1,6 @@
+$('#task-<%= @task.id %>').remove();
+<% if @task.active? %>
+$('#active-task-count').html(parseInt($('#active-task-count').html()) - 1);
+<% else %>
+$('#completed-task-count').html(parseInt($('#completed-task-count').html()) - 1);
+<% end %>

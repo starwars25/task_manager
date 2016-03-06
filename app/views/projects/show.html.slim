@@ -13,6 +13,9 @@
             = hidden_field_tag :status, :completed
             = check_box_tag :completed, 1, false, id: "task-checkbox-#{task.id}", onclick: 'checkBoxClicked(this)'
             span.task-text = task.content
+            '
+            | |
+            =< link_to 'Delete', project_task_path(@project.id, task.id), method: :delete, remote: true
     h4
       | Completed Tasks:
       span#completed-task-count =< @project.tasks.completed.size
