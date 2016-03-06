@@ -1,16 +1,13 @@
-h1 Listing Projects
-- @projects.each do |project|
-  = link_to project.name, project
-  br
 .row
-  .col-md-3
-    h4 New Project
+  .col-md-6
+    h3 Listing Projects
+    - @projects.each do |project|
+      = link_to project.name, project
+      br
+  .col-md-3.col-md-offset-3
+    h3 New Project
     = form_for @project do |f|
-      - if @project.errors.any?
-        .alert.alert-danger
-          ul
-          - @project.errors.full_messages.each do |message|
-            li = message
+      = render 'layouts/form_errors', instance: @project
       .form-group
         = f.label :name
         = f.text_field :name, class: 'form-control'

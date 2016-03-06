@@ -1,12 +1,15 @@
 class ProjectsController < ApplicationController
 
+  http_basic_authenticate_with name: ENV["TASK_MANAGER_LOGIN"], password: ENV["TASK_MANAGER_PASSWORD"]
+
   def index
-    @projects = Project.includes(:tasks).all
+    @projects = Project.all
     @project = Project.new
   end
 
   def show
     @project = Project.includes(:tasks).find(params[:id])
+    @task = Task.new(project_id: @project.id)
   end
 
   def create
